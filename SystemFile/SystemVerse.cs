@@ -1,9 +1,10 @@
-﻿using Menu;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using Menu;
 
 namespace SystemFile
 {
@@ -11,7 +12,7 @@ namespace SystemFile
     {
         public string? Name { get; set; }
         public string? Author { get; set; }
-        public int? YearWrite { get; set; }
+        public int? YearWriting { get; set; }
         public string? Theme { get; set; }
     }
     class AppVerse : Verse
@@ -22,14 +23,14 @@ namespace SystemFile
             {
                 Name = "STEP",
                 Author = "Code",
-                YearWrite = 2024,
+                YearWriting = 2024,
                 Theme = "Why are you zombie?"
             },
             new Verse()
             {
                 Name = "Step",
                 Author = "92kxa",
-                YearWrite = 1991,
+                YearWriting = 1991,
                 Theme = "Why are you zombie? #2"
             }
         };
@@ -58,7 +59,7 @@ namespace SystemFile
             {
                 Console.Clear();
                 int choice = ConsoleMenu.SelectVertical(HPosition.Center, VPosition.Center, HorizontalAlignment.Center,
-                    "Name", "Author", "Year", "Theme", "Return");
+                    "Name", "Author", "Year", "Theme", "Return back");
                 switch (choice)
                 {
                     case 0:
@@ -74,7 +75,7 @@ namespace SystemFile
                     case 2:
                         {
                             Console.Write("Input a new Year: ");
-                            YearWrite = Convert.ToInt32(Console.ReadLine());
+                            YearWriting = Convert.ToInt32(Console.ReadLine());
                             break;
                         }
                     case 3:
@@ -85,13 +86,13 @@ namespace SystemFile
                         }
                     case 4:
                         {
-                            if (Name != null && Author != null && YearWrite != null && Theme != null)
+                            if (Name != null && Author != null && YearWriting != null && Theme != null)
                             {
                                 list.Add(new Verse()
                                 {
                                     Name = Name,
                                     Author = Author,
-                                    YearWrite = YearWrite,
+                                    YearWriting = YearWriting,
                                     Theme = Theme
                                 });
                             }
@@ -106,7 +107,7 @@ namespace SystemFile
             {
                 Console.Clear();
                 int choice = ConsoleMenu.SelectVertical(HPosition.Center, VPosition.Center, HorizontalAlignment.Center,
-                    "Index Verse", "Return");
+                    "Index Verse", "Return back");
                 switch (choice)
                 {
                     case 0:
@@ -131,38 +132,38 @@ namespace SystemFile
                 Thread.Sleep(5000);
             }
         }
-        public void Find() //я хотів скоротити його, але в кінці написання зрозумів, що для лямбди потрібно окремо створювати метод під конкретний тип. Тож я залишаю цю ідею подалік
+        public void Find()
         {
             Console.WriteLine("Exit ~~ Enter");
             do
             {
                 Console.Clear();
                 int choice = ConsoleMenu.SelectVertical(HPosition.Center, VPosition.Center, HorizontalAlignment.Center,
-                    "Name", "Author", "Year", "Theme", "Return");
+                    "Name", "Author", "Year", "Theme", "Return back");
                 string? searchName = Console.ReadLine().ToLower();
                 switch (choice)
                 {
                     case 0:
                         {
                             var search = list.Where(x => x.Name.ToLower() == searchName).ToList();
-                            search.ForEach(x => Console.WriteLine($"{x.Name} || {x.Author} || {x.YearWrite} || {x.Theme}"));
+                            search.ForEach(x => Console.WriteLine($"{x.Name} || {x.Author} || {x.YearWriting} || {x.Theme}"));
                             break;
                         }
                     case 1:
                         {
                             var search = list.Where(x => x.Author.ToLower() == searchName).ToList();
-                            search.ForEach(x => Console.WriteLine($"{x.Name} || {x.Author} || {x.YearWrite} || {x.Theme}"));
+                            search.ForEach(x => Console.WriteLine($"{x.Name} || {x.Author} || {x.YearWriting} || {x.Theme}"));
                             break;
                         }
                     case 2:
                         {
-                            var search = list.Where(x => x.YearWrite == (Convert.ToInt32(searchName))).ToList();
-                            search.ForEach(x => Console.WriteLine($"{x.Name} || {x.Author} || {x.YearWrite} || {x.Theme}")); break;
+                            var search = list.Where(x => x.YearWriting == (Convert.ToInt32(searchName))).ToList();
+                            search.ForEach(x => Console.WriteLine($"{x.Name} || {x.Author} || {x.YearWriting} || {x.Theme}")); break;
                         }
                     case 3:
                         {
                             var search = list.Where(x => x.Theme.ToLower() == searchName).ToList();
-                            search.ForEach(x => Console.WriteLine($"{x.Name} || {x.Author} || {x.YearWrite} || {x.Theme}")); break;
+                            search.ForEach(x => Console.WriteLine($"{x.Name} || {x.Author} || {x.YearWriting} || {x.Theme}")); break;
                         }
                     case 4: return;
                 }
@@ -170,11 +171,99 @@ namespace SystemFile
         }
         public void SaveFile()
         {
-
+            Console.WriteLine("~~~~~~~ Menu File ~~~~~~~");
+            int choice = ConsoleMenu.SelectVertical(HPosition.Center, VPosition.Center, HorizontalAlignment.Center,
+                "Verse", "Name", "Aurhor", "Year", "Theme", "Return back");
+            switch (choice)
+            {
+                case 0:
+                    {
+                        using (StreamWriter sw = File.CreateText($"Main.txt"))
+                        {
+                            list.ForEach(x => sw.WriteLine($"{x.Name}\n{x.Author}\n{x.YearWriting}\n{x.Theme}"));
+                        }
+                        break;
+                    }
+                case 1:
+                    {
+                        using (StreamWriter sw = File.CreateText($"Names.txt"))
+                        {
+                            list.ForEach(x => sw.WriteLine(Name));
+                        }
+                        break;
+                    }
+                case 2:
+                    {
+                        using (StreamWriter sw = File.CreateText($"Aurhors.txt"))
+                        {
+                            list.ForEach(x => sw.WriteLine(x.Author));
+                        }
+                        break;
+                    }
+                case 3:
+                    {
+                        using (StreamWriter sw = File.CreateText($"YearWriting.txt"))
+                        {
+                            list.ForEach(x => sw.WriteLine(x.YearWriting));
+                        }
+                        break;
+                    }
+                case 4:
+                    {
+                        using (StreamWriter sw = File.CreateText($"Themes.txt"))
+                        {
+                            list.ForEach(x => sw.WriteLine(x.Theme));
+                        }
+                        break;
+                    }
+                case 5: return;
+            }
         }
         public void LoadFile()
         {
-
+            Console.WriteLine("~~~~~~~ Menu File ~~~~~~~");
+            int choice = ConsoleMenu.SelectVertical(HPosition.Center, VPosition.Center, HorizontalAlignment.Center,
+                "Verse", "Name", "Aurhor", "Year", "Theme", "Return back");
+            switch (choice)
+            {
+                case 0:
+                    {
+                        using (StreamReader sr = File.OpenText("Main.txt"))
+                        {
+                            Console.WriteLine(sr.ReadToEnd());
+                        }
+                        Console.Read(); break;
+                    }
+                case 1:
+                    {
+                        using (StreamReader sr = File.OpenText("Names.txt"))
+                        {
+                            Console.WriteLine(sr.ReadToEnd());
+                        }
+                        Console.Read(); break;
+                    }
+                case 2:
+                    using (StreamReader sr = File.OpenText("Author.txt"))
+                    {
+                        Console.WriteLine(sr.ReadToEnd());
+                    }
+                    Console.Read(); break;
+                case 3:
+                    using (StreamReader sr = File.OpenText("YearWriting.txt"))
+                    {
+                        Console.WriteLine(sr.ReadToEnd());
+                    }
+                    Console.Read(); break;
+                case 4:
+                    {
+                        using (StreamReader sr = File.OpenText("Themes.txt"))
+                        {
+                            Console.WriteLine(sr.ReadToEnd());
+                        }
+                        Console.Read(); break;
+                    }
+                case 5: return;
+            }
         }
         public void PrintVersesInConsole()
         {
@@ -182,7 +271,7 @@ namespace SystemFile
             Console.WriteLine("Exit ~~ Enter");
             do
             {
-                list.ForEach(x => Console.WriteLine($"{x.Name} || {x.Author} || {x.YearWrite} || {x.Theme}"));
+                list.ForEach(x => Console.WriteLine($"{x.Name} || {x.Author} || {x.YearWriting} || {x.Theme}"));
             } while (Console.ReadKey(true).Key != ConsoleKey.Enter);
         }
     }
